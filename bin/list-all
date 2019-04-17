@@ -8,7 +8,7 @@ if [ -n "$GITHUB_API_TOKEN" ]; then
   TOKEN_HEADER="Authorization: token ${GITHUB_API_TOKEN}"
 fi
 
-: echo $(curl \
+echo $(curl \
     -sf \
     -H "${TOKEN_HEADER}" \
     -H "Accept: application/vnd.github.v3+json" \
