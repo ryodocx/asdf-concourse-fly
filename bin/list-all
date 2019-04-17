@@ -4,8 +4,8 @@ set -e
 . $(dirname $0)/util
 checkDependencies
 
-if [ -n "$OAUTH_TOKEN" ]; then
-  TOKEN_HEADER="-H 'Authorization: token $OAUTH_TOKEN'"
+if [ -n "$GITHUB_API_TOKEN" ]; then
+  TOKEN_HEADER="-H 'Authorization: token $GITHUB_API_TOKEN'"
 fi
 
 echo $(curl \
