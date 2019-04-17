@@ -1,5 +1,5 @@
 language: minimal
-script: asdf plugin-test concourse-fly https://github.com/ryodocx/asdf-concourse-fly
+script: asdf plugin-test fly https://github.com/ryodocx/asdf-concourse-fly
 before_script:
   - git clone https://github.com/asdf-vm/asdf.git
   - . asdf/asdf.sh
