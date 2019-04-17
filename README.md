@@ -3,5 +3,5 @@
 
 install
 ```
-asdf plugin-add concourse-fly https://github.com/ryodocx/asdf-concourse-fly
+asdf plugin-add fly https://github.com/ryodocx/asdf-concourse-fly
 ```
