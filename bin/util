@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+toolname=fly
+github_user=concourse
+github_repo=concourse
+required_commands="curl sed tar mktemp"
+
+checkDependencies() {
+    local flag=0
+    for cmd in ${required_commands}; do
+        if ! type ${cmd} &>/dev/null; then
+            echo "required command: ${cmd}" 1>&2
+            flag=1
+        fi
+    done
+    if [ ${flag} = 1 ]; then
+        exit 1
+    fi
+}

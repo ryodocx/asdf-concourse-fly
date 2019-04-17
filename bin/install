@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+set -e
+
+. $(dirname $0)/util
+checkDependencies
+
+# check ASDK environment variables
+[ -n "$ASDF_INSTALL_VERSION" ] || (echo 'Missing ASDF_INSTALL_VERSION' >&2 && exit 1)
+[ -n "$ASDF_INSTALL_PATH" ] || (echo 'Missing ASDF_INSTALL_PATH' >&2 && exit 1)
+
+# install
+downloadPath="$(mktemp -d)"
+cd "${downloadPath}"
+
+if [ ${ASDF_INSTALL_VERSION%%.*} -ge 5 ]; then
+    # version: 5.x.x ~
+    case "$(uname -s)" in
+    "Darwin")
+        DOWNLOADURL="https://github.com/${github_user}/${github_repo}/releases/download/v${ASDF_INSTALL_VERSION}/fly-${ASDF_INSTALL_VERSION}-darwin-amd64.tgz"
+        ;;
+    "Linux")
+        DOWNLOADURL="https://github.com/${github_user}/${github_repo}/releases/download/v${ASDF_INSTALL_VERSION}/fly-${ASDF_INSTALL_VERSION}-linux-amd64.tgz"
+        ;;
+    esac
+
+    echo "download: ${DOWNLOADURL}"
+    curl -sfL -o "${downloadPath}/fly.tgz" "${DOWNLOADURL}"
+    tar -xzf fly.tgz
+    mkdir -p "${ASDF_INSTALL_PATH}/bin"
+    toolPath="${ASDF_INSTALL_PATH}/bin/${toolname}"
+    chmod +x fly
+    mv ./fly "${toolPath}"
+    rm -rf "${downloadPath}"
+
+else
+    # version: ~ 4.2.3
+    case "$(uname -s)" in
+    "Darwin")
+        DOWNLOADURL="https://github.com/${github_user}/${github_repo}/releases/download/v${ASDF_INSTALL_VERSION}/fly_darwin_amd64"
+        ;;
+    "Linux")
+        DOWNLOADURL="https://github.com/${github_user}/${github_repo}/releases/download/v${ASDF_INSTALL_VERSION}/fly_linux_amd64"
+        ;;
+    esac
+
+    echo "download: ${DOWNLOADURL}"
+    curl -sfL -o "${downloadPath}/fly" "${DOWNLOADURL}"
+    mkdir -p "${ASDF_INSTALL_PATH}/bin"
+    toolPath="${ASDF_INSTALL_PATH}/bin/${toolname}"
+    chmod +x fly
+    mv ./fly "${toolPath}"
+    rm -rf "${downloadPath}"
+fi
